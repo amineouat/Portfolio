@@ -191,6 +191,7 @@ html.dark-mode #toggle-theme::before {
 .intro,
 .content-item,
 .content-box {
+  position: relative;
   background: linear-gradient(135deg, var(--card-a), var(--card-b));
   border: 1px solid var(--border-soft);
   border-radius: 14px;
@@ -487,6 +488,95 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt .intro-text,
+.tilt .item-right,
+.tilt .content-para,
+.tilt .skills-grid {
+  transform: translateZ(18px);
+}
+
+.tilt .item-left,
+.tilt .image-row {
+  transform: translateZ(30px);
+}
+
+.tilt .profile-pic-wrapper {
+  transform: translateZ(40px);
+}
+
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(255, 255, 255, 0.22), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.tilt:hover::after {
+  opacity: 1;
+}
+
+html.dark-mode .tilt::after {
+  background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(140, 180, 255, 0.13), transparent 65%);
+}
+
+.skill-icon {
+  transition: transform 0.25s ease;
+}
+
+.skill-col li:hover .skill-icon {
+  transform: translateY(-3px) rotateY(15deg) scale(1.12);
+}
+
+#bg-net {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.typewriter {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  min-height: 22px;
+  margin-bottom: 10px;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: var(--accent);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+header nav a.active {
+  color: var(--accent);
+}
+
+header nav a.active::after {
+  right: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

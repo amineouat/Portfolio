@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amine OUATMANI</title>
   <meta name="description" content="Amine OUATMANI, Master's student in Computer Science at Université Paris-Saclay. Machine Learning, Deep Learning, Computer Vision and Artificial Intelligence.">
+  <meta property="og:title" content="Amine OUATMANI – Portfolio">
+  <meta property="og:description" content="Master's student in Computer Science at Université Paris-Saclay. Machine Learning, Deep Learning, Computer Vision and Artificial Intelligence.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://amine-ouatmani.fr/">
+  <meta property="og:image" content="https://amine-ouatmani.fr/static/photo.JPG">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="static/favicon.svg">
   <script>if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark-mode');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +20,8 @@
 </head>
 
 <body>
+
+  <canvas id="bg-net" aria-hidden="true"></canvas>
 
   <header>
     <button id="toggle-theme" aria-label="Toggle dark mode"></button>
@@ -31,6 +40,7 @@
       <div class="intro">
         <div class="intro-text">
           <h2>Amine OUATMANI</h2>
+          <p class="typewriter"><span id="typed"></span><span class="caret"></span></p>
           <p>
             I am a Master's student in Computer Science at <strong>Université Paris-Saclay</strong>.
             I am passionate about <strong>Machine Learning</strong>, <strong>Deep Learning</strong>,
@@ -453,6 +463,108 @@
       backToTop.classList.toggle('show', window.scrollY > 400);
     }, { passive: true });
     backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    const fineMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (fineMouse && !noMotion) {
+      document.querySelectorAll('.intro, .content-item, .content-box').forEach(card => {
+        card.classList.add('tilt');
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width;
+          const y = (e.clientY - r.top) / r.height;
+          const rx = (0.5 - y) * 5;
+          const ry = (x - 0.5) * 5;
+          card.style.transition = 'transform 0.1s ease-out, box-shadow 0.3s ease, border-color 0.3s ease';
+          card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+          card.style.setProperty('--mx', (x * 100) + '%');
+          card.style.setProperty('--my', (y * 100) + '%');
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transition = '';
+          card.style.transform = '';
+        });
+      });
+    }
+
+    const phrases = ['Machine Learning', 'Deep Learning', 'Computer Vision', 'Explainable AI', 'Data Science'];
+    const typed = document.getElementById('typed');
+    if (typed) {
+      if (noMotion) {
+        typed.textContent = 'Machine Learning · Computer Vision · XAI';
+      } else {
+        let pi = 0, ci = 0, deleting = false;
+        (function tick() {
+          const word = phrases[pi];
+          ci += deleting ? -1 : 1;
+          typed.textContent = word.slice(0, ci);
+          let delay = deleting ? 40 : 85;
+          if (!deleting && ci === word.length) { delay = 1400; deleting = true; }
+          else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; delay = 350; }
+          setTimeout(tick, delay);
+        })();
+      }
+    }
+
+    const canvas = document.getElementById('bg-net');
+    if (canvas && !noMotion) {
+      const ctx = canvas.getContext('2d');
+      const N = window.innerWidth < 700 ? 30 : 55;
+      let W, H;
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      const pts = Array.from({ length: N }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35
+      }));
+      (function frame() {
+        ctx.clearRect(0, 0, W, H);
+        const dark = root.classList.contains('dark-mode');
+        const dot = dark ? 'rgba(140,180,232,0.55)' : 'rgba(106,78,119,0.45)';
+        const lineBase = dark ? '140,180,232' : '106,78,119';
+        pts.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > W) p.vx *= -1;
+          if (p.y < 0 || p.y > H) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1.6, 0, Math.PI * 2);
+          ctx.fillStyle = dot;
+          ctx.fill();
+        });
+        for (let i = 0; i < N; i++) {
+          for (let j = i + 1; j < N; j++) {
+            const dx = pts[i].x - pts[j].x;
+            const dy = pts[i].y - pts[j].y;
+            const d = Math.hypot(dx, dy);
+            if (d < 130) {
+              ctx.strokeStyle = 'rgba(' + lineBase + ',' + (0.14 * (1 - d / 130)).toFixed(3) + ')';
+              ctx.beginPath();
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(frame);
+      })();
+    }
+
+    const navLinks = document.querySelectorAll('nav a');
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('data-target') === entry.target.id));
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('.section').forEach(s => spy.observe(s));
   </script>
 
 </body>
