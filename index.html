@@ -1,9 +1,14 @@
-p<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amine OUATMANI</title>
+  <meta name="description" content="Amine OUATMANI, Master's student in Computer Science at Université Paris-Saclay. Machine Learning, Deep Learning, Computer Vision and Artificial Intelligence.">
+  <script>if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark-mode');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -398,43 +403,56 @@ p<!DOCTYPE html>
     </div>
   </footer>
 
+  <button id="back-to-top" aria-label="Back to top">↑</button>
 
   <script>
-    
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.getElementById(this.getAttribute('data-target'));
         if (target) {
-          const offset = target.offsetTop - document.querySelector('header').offsetHeight;
+          const offset = target.offsetTop - document.querySelector('header').offsetHeight - 16;
           window.scrollTo({ top: offset, behavior: 'smooth' });
         }
       });
     });
 
-    
-    const body = document.body;
-    const btn  = document.getElementById('toggle-theme');
+    const root = document.documentElement;
+    const btn = document.getElementById('toggle-theme');
 
     function updateIcons() {
-      const dark = body.classList.contains('dark-mode');
+      const dark = root.classList.contains('dark-mode');
       document.querySelectorAll('.icon').forEach(img => {
         const src = dark ? img.getAttribute('data-dark') : img.getAttribute('data-light');
         if (src) img.setAttribute('src', src);
       });
     }
 
-    const saved = localStorage.getItem('theme');
-    if (!saved || saved === 'dark') {
-      body.classList.add('dark-mode');
-    }
     updateIcons();
 
     btn.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
+      root.classList.toggle('dark-mode');
       updateIcons();
-      localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+      localStorage.setItem('theme', root.classList.contains('dark-mode') ? 'dark' : 'light');
     });
+
+    const revealEls = document.querySelectorAll('.intro, .content-item, .content-box');
+    revealEls.forEach(el => el.classList.add('reveal'));
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => io.observe(el));
+
+    const backToTop = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   </script>
 
 </body>
