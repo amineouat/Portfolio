@@ -13,6 +13,13 @@
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/svg+xml" href="static/favicon.svg">
   <script>if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark-mode');</script>
+  <script>
+    
+    window.GATE_ENABLED = true;
+    if (!window.GATE_ENABLED || localStorage.getItem('gate_passed')) {
+      document.documentElement.classList.add('gate-passed');
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,6 +27,53 @@
 </head>
 
 <body>
+
+  <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate-card">
+      <h2 id="gate-title">Welcome 👋</h2>
+      <p>Enter a username to access the portfolio.</p>
+      <form id="gate-form" autocomplete="off">
+        <input id="gate-input" type="text" name="username" placeholder="Your name or username"
+               maxlength="40" required aria-label="Username">
+        <button type="submit">Enter →</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      if (!window.GATE_ENABLED) return;
+      var gate = document.getElementById('gate');
+      if (!gate) return;
+      var form = document.getElementById('gate-form');
+      var input = document.getElementById('gate-input');
+      if (!document.documentElement.classList.contains('gate-passed')) {
+        setTimeout(function () { input.focus(); }, 50);
+      }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var username = input.value.trim();
+        if (!username) return;
+        try {
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              access_key: '6f371af2-2fd9-4336-a879-ea722286a42d',
+              subject: 'New portfolio visit',
+              from_name: 'Portfolio Gate',
+              username: username,
+              page: location.href
+            })
+          });
+        } catch (err) {}
+        localStorage.setItem('gate_passed', '1');
+        document.documentElement.classList.add('gate-passed');
+        gate.classList.add('hide');
+        setTimeout(function () { gate.remove(); }, 450);
+      });
+    })();
+  </script>
 
   <canvas id="bg-net" aria-hidden="true"></canvas>
 
