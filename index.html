@@ -323,6 +323,32 @@
           </div>
         </div>
       </div>
+<!-- 
+      <div class="content-box" id="hadaca">
+        <div class="content-para">
+          <p>
+            <strong><u>HADACA – Tumor Microenvironment Deconvolution:</u></strong><br>
+            Competitive bioinformatics challenge on <strong>Codabench</strong> focused on estimating the cellular
+            composition of <strong>pancreatic cancer (PDAC)</strong> tissue samples.
+            Given bulk RNA-seq and DNA methylation profiles from 9 heterogeneous datasets (234 samples total),
+            the objective was to predict the proportions of 5 cell populations:
+            endothelial cells, cancer-associated fibroblasts, immune cells, and two cancer subtypes (classic and basal PDAC).
+          </p>
+          <p>
+            The solution relies on <strong>Non-Negative Least Squares (NNLS)</strong> with bootstrap aggregation
+            to stabilize estimates across 20 subsampled iterations.
+            Feature selection combines a composite score (variance, coefficient of variation, fold-change)
+            with cell-type-specific marker detection and correlation filtering to eliminate redundant genes or CpG sites.
+            A dataset-adaptive strategy uses DNA methylation as the primary signal for most datasets,
+            while switching to RNA-seq for in vivo samples, reflecting the distinct informativeness of each modality.
+            Per-dataset bias correction and mutual exclusivity constraints between cancer subtypes further refine predictions.
+          </p>
+          <p>
+            Achieved a <strong>median score of 0.90</strong> across all 9 test datasets,
+            evaluated as a weighted geometric mean of Pearson/Spearman correlations, MAE, RMSE, and Aitchison distance.
+          </p>
+        </div>
+      </div> -->
 
       <p>You can find more examples of my work on my <a href="https://github.com/amineouat" target="_blank">GitHub</a>.</p>
 
@@ -567,5 +593,7 @@
     document.querySelectorAll('.section').forEach(s => spy.observe(s));
   </script>
 
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c5887d0439b4260870e630063138a31"}'></script>
+  
 </body>
 </html>
