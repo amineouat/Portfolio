@@ -15,7 +15,7 @@
   <script>if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark-mode');</script>
   <script>
     
-    window.GATE_ENABLED = true;
+    window.GATE_ENABLED = false;
     if (!window.GATE_ENABLED || localStorage.getItem('gate_passed')) {
       document.documentElement.classList.add('gate-passed');
     }
@@ -24,6 +24,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -237,6 +245,39 @@
     <section class="section" id="projects">
       <h2>Some of my projects</h2>
 
+      <div class="content-box project-side" id="hypercare">
+        <div class="project-side-img">
+          <img src="static/hypercare_graph.png" alt="Multi-agent workflow of a support ticket">
+        </div>
+
+        <div class="content-para">
+          <p>
+            <strong><u>Multi-Agent Support System (LangGraph &amp; Snowflake):</u></strong><br>
+            Multi-agent system that handles support tickets for the pricing applications of a container shipping company.
+            For each ticket, the system <strong>answers</strong>, <strong>asks for clarification</strong>,
+            or <strong>escalates</strong> to an expert, and it never invents an explanation for a price gap.
+            The workflow is an explicit <strong>LangGraph</strong> graph coordinating four agents:
+            an <strong>orchestrator</strong> that classifies the ticket with an LLM,
+            a <strong>documentation agent</strong> doing <strong>RAG</strong> over 1,208 passages
+            (Snowflake Arctic embeddings, followed by an <strong>LLM verification</strong> step),
+            a <strong>data agent</strong> querying about one million price lines with SQL,
+            and a <strong>resolution agent</strong> that writes the reply or the escalation file.
+            The final decision is made by <strong>written rules</strong>, not by the LLM,
+            and every step leaves an auditable <strong>trace</strong>.
+            The project also includes an automated workflow that detects similar tickets,
+            and a <strong>human-validated knowledge-base repair</strong> loop with rollback.
+            On recurring questions, the system gave 34 correct answers out of 40 with no wrong answer.
+            On 100 held-out tickets about unseen problems, we compared two verification modes:
+            the strict one cut wrong answers from 17 to 7, at the cost of more escalations.
+            Realized in collaboration with
+            Javier CASTANO PENA and
+            <a href="https://github.com/JohanM-B" target="_blank">Johan MARTIN-BORRET</a>.
+            The complete source code is available on my
+            <a href="https://github.com/amineouat/hypercare-multi-agent-system" target="_blank">GitHub</a>.
+          </p>
+        </div>
+      </div>
+
       <div class="content-box" id="ddpm">
         <div class="content-para">
           <p>
@@ -349,6 +390,33 @@
         </div>
       </div>
 
+      <div class="content-box" id="hadaca">
+        <div class="content-para">
+          <p>
+            <strong><u>HADACA – Tumor Microenvironment Deconvolution:</u></strong><br>
+            Competitive bioinformatics challenge on <strong>Codabench</strong> focused on estimating the cellular
+            composition of <strong>pancreatic cancer (PDAC)</strong> tissue samples.
+            Given bulk RNA-seq and DNA methylation profiles from 9 heterogeneous datasets (234 samples total),
+            the objective was to predict the proportions of 5 cell populations:
+            endothelial cells, cancer-associated fibroblasts, immune cells, and two cancer subtypes (classic and basal PDAC).
+          </p>
+          <p>
+            The solution relies on <strong>Non-Negative Least Squares (NNLS)</strong> with bootstrap aggregation
+            to stabilize estimates across 20 subsampled iterations.
+            Feature selection combines a composite score (variance, coefficient of variation, fold-change)
+            with cell-type-specific marker detection and correlation filtering to eliminate redundant genes or CpG sites.
+            A dataset-adaptive strategy uses DNA methylation as the primary signal for most datasets,
+            while switching to RNA-seq for in vivo samples, reflecting the distinct informativeness of each modality.
+            Per-dataset bias correction and mutual exclusivity constraints between cancer subtypes further refine predictions.
+          </p>
+          <p>
+            Achieved a <strong>median score of 0.90</strong> across all 9 test datasets,
+            evaluated as a weighted geometric mean of Pearson/Spearman correlations, MAE, RMSE, and Aitchison distance.
+          </p>
+        </div>
+      </div>
+
+
       <div class="content-box" id="ant-colony-rush">
         <div class="content-para">
           <p>
@@ -377,32 +445,8 @@
           </div>
         </div>
       </div>
-<!-- 
-      <div class="content-box" id="hadaca">
-        <div class="content-para">
-          <p>
-            <strong><u>HADACA – Tumor Microenvironment Deconvolution:</u></strong><br>
-            Competitive bioinformatics challenge on <strong>Codabench</strong> focused on estimating the cellular
-            composition of <strong>pancreatic cancer (PDAC)</strong> tissue samples.
-            Given bulk RNA-seq and DNA methylation profiles from 9 heterogeneous datasets (234 samples total),
-            the objective was to predict the proportions of 5 cell populations:
-            endothelial cells, cancer-associated fibroblasts, immune cells, and two cancer subtypes (classic and basal PDAC).
-          </p>
-          <p>
-            The solution relies on <strong>Non-Negative Least Squares (NNLS)</strong> with bootstrap aggregation
-            to stabilize estimates across 20 subsampled iterations.
-            Feature selection combines a composite score (variance, coefficient of variation, fold-change)
-            with cell-type-specific marker detection and correlation filtering to eliminate redundant genes or CpG sites.
-            A dataset-adaptive strategy uses DNA methylation as the primary signal for most datasets,
-            while switching to RNA-seq for in vivo samples, reflecting the distinct informativeness of each modality.
-            Per-dataset bias correction and mutual exclusivity constraints between cancer subtypes further refine predictions.
-          </p>
-          <p>
-            Achieved a <strong>median score of 0.90</strong> across all 9 test datasets,
-            evaluated as a weighted geometric mean of Pearson/Spearman correlations, MAE, RMSE, and Aitchison distance.
-          </p>
-        </div>
-      </div> -->
+
+
 
       <p>You can find more examples of my work on my <a href="https://github.com/amineouat" target="_blank">GitHub</a>.</p>
 
@@ -435,6 +479,8 @@
               <li><img src="static/scikit-learn.png" alt="Scikit-Learn" class="skill-icon"> Scikit-Learn</li>
               <li><img src="static/matplotlib.png"   alt="Matplotlib"   class="skill-icon"> Matplotlib</li>
               <li><span class="skill-icon skill-emoji">🤗</span> Hugging Face</li>
+              <li><span class="skill-icon skill-emoji">🕸️</span> LangGraph</li>
+              <li><span class="skill-icon skill-emoji">📚</span> RAG</li>
             </ul>
           </div>
 
@@ -446,6 +492,7 @@
               <li><span class="skill-icon skill-emoji">🐳</span> Docker</li>
               <li><span class="skill-icon skill-emoji">🏗️</span> Data Warehouse / Data Lake</li>
               <li><span class="skill-icon skill-emoji">🔄</span> ETL Pipelines</li>
+              <li><span class="skill-icon skill-emoji">❄️</span> Snowflake</li>
             </ul>
           </div>
 
@@ -648,6 +695,8 @@
   </script>
 
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6c5887d0439b4260870e630063138a31"}'></script>
-  
+
+  <script type="module" src="network-sphere.js"></script>
+
 </body>
 </html>

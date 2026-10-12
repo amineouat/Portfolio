@@ -368,6 +368,45 @@ html.dark-mode .item-left img.logo {
   box-shadow: var(--shadow-sm);
 }
 
+.content-box.project-side {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.project-side-img {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.project-side-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.project-side .content-para {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 699px) {
+  .content-box.project-side {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .project-side-img {
+    flex-basis: auto;
+    width: 60%;
+    max-width: 60%;
+  }
+}
+
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
@@ -503,7 +542,8 @@ footer {
 }
 
 .tilt .item-left,
-.tilt .image-row {
+.tilt .image-row,
+.tilt .project-side-img {
   transform: translateZ(30px);
 }
 
@@ -579,9 +619,8 @@ html.dark-mode .tilt::after {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: var(--bg);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #0d1422 0%, #070a12 55%, #04060b 100%);
   transition: opacity 0.45s ease;
 }
 
@@ -594,26 +633,67 @@ html.gate-passed #gate {
   pointer-events: none;
 }
 
+.gate-sphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.gate-sphere canvas {
+  display: block;
+}
+
+.node-label {
+  font-family: "SFMono-Regular", "JetBrains Mono", "Menlo", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #8fe6ff;
+  text-shadow: 0 0 8px rgba(80, 200, 255, 0.65);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(10px, -50%);
+  transition: opacity 0.3s ease;
+}
+
+.node-label::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #8fe6ff;
+  box-shadow: 0 0 6px rgba(120, 215, 255, 0.9);
+  transform: translateY(-50%);
+}
+
 .gate-card {
-  background: linear-gradient(135deg, var(--card-a), var(--card-b));
-  border: 1px solid var(--border-soft);
-  border-radius: 16px;
-  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 2;
+  background: rgba(12, 18, 30, 0.55);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(120, 200, 255, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 40px rgba(60, 160, 230, 0.08);
   padding: 40px 36px;
-  max-width: 380px;
+  max-width: 390px;
   width: 100%;
   text-align: center;
 }
 
 .gate-card h2 {
-  font-size: 26px;
+  font-size: 27px;
   font-weight: 800;
   letter-spacing: -0.01em;
   margin-bottom: 10px;
+  color: #f1f6ff;
 }
 
 .gate-card p {
-  color: var(--text-soft);
+  color: #9fb2c8;
   font-size: 15px;
   margin-bottom: 22px;
 }
@@ -628,16 +708,21 @@ html.gate-passed #gate {
   padding: 13px 16px;
   font-size: 15px;
   font-family: inherit;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(130, 190, 235, 0.25);
   border-radius: 10px;
-  background: var(--bg);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f6ff;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#gate-input::placeholder {
+  color: #6f86a0;
 }
 
 #gate-input:focus {
-  border-color: var(--accent);
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
 }
 
 #gate-form button {
@@ -648,14 +733,15 @@ html.gate-passed #gate {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  background: var(--accent);
-  color: #fff;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  color: #04223a;
+  background: linear-gradient(135deg, #6fe0ff, #3aa0e8);
+  box-shadow: 0 6px 20px rgba(70, 180, 240, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #gate-form button:hover {
   transform: translateY(-2px);
-  opacity: 0.92;
+  box-shadow: 0 10px 26px rgba(70, 180, 240, 0.5);
 }
 
 header nav a.active {
