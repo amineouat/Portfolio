@@ -467,19 +467,33 @@
             endothelial cells, cancer-associated fibroblasts, immune cells, and two cancer subtypes (classic and basal PDAC).
           </p>
           <p>
-            The solution relies on <strong>Non-Negative Least Squares (NNLS)</strong> with bootstrap aggregation
-            to stabilize estimates across 20 subsampled iterations.
+            The solution relies on <strong>Non-Negative Least Squares (NNLS)</strong> against reference profiles of each cell type.
             Feature selection combines a composite score (variance, coefficient of variation, fold-change)
             with cell-type-specific marker detection and correlation filtering to eliminate redundant genes or CpG sites.
             A dataset-adaptive strategy uses DNA methylation as the primary signal for most datasets,
-            while switching to RNA-seq for in vivo samples, reflecting the distinct informativeness of each modality.
+            while relying on RNA-seq for the in vivo and in vitro samples, reflecting the distinct informativeness of each modality.
             Per-dataset bias correction and mutual exclusivity constraints between cancer subtypes further refine predictions.
           </p>
           <p>
             Achieved a <strong>median score of 0.90</strong> across all 9 test datasets,
             evaluated as a weighted geometric mean of Pearson/Spearman correlations, MAE, RMSE, and Aitchison distance.
+            The complete source code is available on my
+            <a href="https://github.com/amineouat/hadaca-deconvolution" target="_blank">GitHub</a>.
           </p>
         </div>
+
+        <div class="image-row">
+          <div class="image-column">
+            <img src="static/hadaca_deconvolution.png" alt="Illustration of bulk deconvolution with single-cell references" style="max-width: 90%; border-radius: 6px;">
+          </div>
+        </div>
+        <p class="image-caption">
+          Illustration of reference-based deconvolution. Figure from M. Dong et al.,
+          “SCDC: bulk gene expression deconvolution by multiple single-cell RNA sequencing references”,
+          <em>Briefings in Bioinformatics</em>, 22(1), 2021, 416–427,
+          <a href="https://doi.org/10.1093/bib/bbz166" target="_blank">doi:10.1093/bib/bbz166</a>,
+          licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>.
+        </p>
       </div>
 
 

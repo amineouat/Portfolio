@@ -368,6 +368,14 @@ html.dark-mode .item-left img.logo {
   box-shadow: var(--shadow-sm);
 }
 
+.image-caption {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-soft);
+  text-align: center;
+}
+
 .content-box.project-side {
   flex-direction: row;
   align-items: flex-start;
